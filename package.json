@@ -1,0 +1,29 @@
+{
+  "name": "waiting-cache",
+  "description": "In-memory cache that prevents redundant async work",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/juliangruber/waiting-cache.git"
+  },
+  "homepage": "https://github.com/juliangruber/waiting-cache",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/test.js"
+  },
+  "dependencies": {},
+  "keywords": [
+    "cache",
+    "waiting",
+    "async"
+  ],
+  "author": {
+    "name": "Julian Gruber",
+    "email": "mail@juliangruber.com",
+    "url": "http://juliangruber.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "~0.3.3"
+  }
+}
