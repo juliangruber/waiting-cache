@@ -3,6 +3,10 @@
 
 In-memory cache that prevents redundant async work.
 
+[![Build Status](https://travis-ci.org/juliangruber/waiting-cache.png?branch=master)](https://travis-ci.org/juliangruber/waiting-cache)
+
+[![browser support](https://ci.testling.com/juliangruber/waiting-cache.png)](https://ci.testling.com/juliangruber/waiting-cache)
+
 ## Usage
 
 ```js
