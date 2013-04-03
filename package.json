@@ -1,7 +1,7 @@
 {
   "name": "waiting-cache",
   "description": "In-memory cache that prevents redundant async work",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/juliangruber/waiting-cache.git"

@@ -1,5 +1,6 @@
 var EventEmitter = require('events').EventEmitter;
-var inherits = require('util').inherits;
+var inherits     = require('util').inherits;
+var memStore     = require('./lib/mem_store');
 
 module.exports = cache;
 
@@ -7,11 +8,14 @@ module.exports = cache;
  * Cache.
  */
 
-function cache () {
-  if (!(this instanceof cache)) return new cache();
+function cache (opts) {
+  if (!(this instanceof cache)) return new cache(opts);
   EventEmitter.call(this);
 
-  this._cache = {};
+  if (!opts) opts = {};
+
+  this._store = opts.store || memStore();
+
   this._caching = [];
 }
 
@@ -28,20 +32,12 @@ inherits(cache, EventEmitter);
  */
 
 cache.prototype.get = function (key, cb) {
-  if (typeof this._cache[key] != 'undefined') {
-    cb(this._cache[key]);
-    return;
-  }
+  var self = this;
 
-  if (this._caching[key]) {
-    this.once(key, function (value) {
-      delete this._caching[key];
-      cb(value);
-    });
-    return;
-  }
-
-  cb(null);
+  self._store.get(key, function (value) {
+    if (typeof value != 'undefined' || !self._caching[key]) return cb(value);
+    self.once(key, cb);
+  });
 }
 
 /**
@@ -51,11 +47,18 @@ cache.prototype.get = function (key, cb) {
  *
  * @param {String} key
  * @param {Object} value
+ * @param {Function} cb
  */
 
-cache.prototype.set = function (key, value) {
-  this._cache[key] = value;
-  this.emit(key, value);
+cache.prototype.set = function (key, value, cb) {
+  var self = this;
+
+  self._store.set(key, value, function (err) {
+    if (err) return cb(err);
+    delete self._caching[key];
+    if (cb) cb();
+    self.emit(key, value);
+  });
 }
 
 /**
@@ -65,6 +68,5 @@ cache.prototype.set = function (key, value) {
  */
 
 cache.prototype.caching = function (key) {
-  if (this._caching[key]) return;
   this._caching[key] = true;
 }

@@ -38,9 +38,12 @@ cache.get('foo', function (value) {
 
 ## API
 
-### Cache()
+### Cache(opts)
 
 Create a new cache.
+
+You can overwrite the default in-memory storage by providing `opts.store`. See
+`lib/mem_store.js` for an example implementation.
 
 ### Cache#get(key, fn)
 
